@@ -24,7 +24,7 @@ install_reqs = parse_requirements('requirements.txt')
 # e.g. ['django==1.5.1', 'mezzanine==1.4.6']
 reqs = [str(ir.req) for ir in install_reqs]
 
-version = '0.0'
+version = '0.1'
 
 setup(name='myhvac_service',
       version=version,
@@ -38,6 +38,7 @@ setup(name='myhvac_service',
       classifiers=['Development Status :: 2 - Pre-Alpha',
                    'License :: OSI Approved :: Apache Software License',
                    'Topic :: Home Automation'],
+      packages=['myhvac_service'],
       include_package_data=True,
       zip_safe=False,
       install_requires=reqs
