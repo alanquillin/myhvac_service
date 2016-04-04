@@ -24,6 +24,7 @@ class ProgramManager(object):
         self.is_active = False
 
     def start(self):
+        print 'Starting Program Manager'
         self.is_active = True
         while self.is_active:
             self.run()
@@ -34,15 +35,16 @@ class ProgramManager(object):
         pass
 
     def run(self):
+        print 'Running program interval...'
         current_state = hvac.get_system_state()
-
+        print 'Current state: %s' % states.print_state(current_state)
         # This is temp until we pull from db
         current_temp = random.randint(68, 74)
-
+        print 'Current temp: %s' % current_temp
         program = prog_fac.get_program()
 
         expected_state = program.get_state(current_temp)
-
+        print 'Expected state: %s' % states.print_state(expected_state)
         if current_state != expected_state:
             if expected_state == states.OFF:
                 hvac.set_system_state(expected_state, current_state)

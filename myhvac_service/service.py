@@ -19,7 +19,14 @@ CONF.register_opts(opts, 'rest_api')
 
 
 def main():
-    display.write('Starting up system...')
+    try:
+        CONF(project='myhvac_service')
+    except cfg.RequiredOptError as e:
+        CONF.print_help()
+        raise SystemExit(1)
+
+    LOG.info('Starting up system...')
+    display.write('Starting up system..')
     hvac.init_gpio()
 
     prog_man = pm.ProgramManager()
@@ -29,5 +36,10 @@ def main():
                      hub.spawn(app.run(debug=CONF.rest_api.debug,
                                        port=CONF.rest_api.port,
                                        use_reloader=False))])
+        LOG.info('System started up successfully!')
     finally:
         prog_man.close()
+
+
+if __name__ == '__main__':
+    main()

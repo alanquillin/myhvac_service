@@ -17,6 +17,7 @@ class LcdDriver(object):
     def __init__(self):
         if CONF.display.lcd_driver == 'lcd2004':
             self._driver = Lcd2004Driver()
+            self._driver.init()
 
     def write(self, msg):
         self._driver.write(msg)
