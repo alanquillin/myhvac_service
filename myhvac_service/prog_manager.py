@@ -31,6 +31,7 @@ class ProgramManager(object):
             hub.sleep(CONF.program_manager.sleep_seconds)
 
     def close(self):
+        print 'Stopping Program Manager'
         self.is_active = False
         pass
 
@@ -46,7 +47,7 @@ class ProgramManager(object):
         expected_state = program.get_state(current_temp)
         print 'Expected state: %s' % states.print_state(expected_state)
         if current_state != expected_state:
-            if expected_state == states.OFF:
-                hvac.set_system_state(expected_state, current_state)
+            print 'Setting system state to: %s' % states.print_state(expected_state)
+            hvac.set_system_state(expected_state, current_state)
 
         display.update()

@@ -32,10 +32,11 @@ def main():
     prog_man = pm.ProgramManager()
 
     try:
-        hub.joinall([hub.spawn(prog_man.start),
-                     hub.spawn(app.run(debug=CONF.rest_api.debug,
-                                       port=CONF.rest_api.port,
-                                       use_reloader=False))])
+        hub.joinall([hub.spawn(prog_man.start)])
+        # hub.joinall([hub.spawn(prog_man.start),
+        #              hub.spawn(app.run(debug=CONF.rest_api.debug,
+        #                                port=CONF.rest_api.port,
+        #                                use_reloader=False))])
         LOG.info('System started up successfully!')
     finally:
         prog_man.close()

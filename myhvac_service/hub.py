@@ -11,7 +11,7 @@ import greenlet
 import traceback
 
 
-LOG = logging.getLogger('ryu.lib.hub')
+LOG = logging.getLogger(__name__)
 
 
 getcurrent = eventlet.getcurrent
