@@ -1,16 +1,22 @@
-import lcddriver
+import lcd2004
 
 
 class Lcd2004Driver(object):
-    def init(self, **kwargs):
-        self._lcd = lcddriver.lcd()
-
+    def __init__(self, **kwargs):
+        self._lcd = lcd2004.lcd()
 
     def write(self, msg):
-        self._lcd.lcd_clear()
+        self.clear()
 
         # now we can display some characters (text, line)
-        self._lcd.lcd_display_string(msg, 1)
-        #self._lcd.lcd_display_string("      I am", 2)
-        #self._lcd.lcd_display_string("        a", 3)
-        #self._lcd.lcd_display_string("   Raspberry Pi !", 4)
+        lines = msg.split('\n')
+        cnt = 1
+        for line in lines:
+            if cnt > 4:
+                break
+
+            self._lcd.lcd_display_string(line, cnt)
+            cnt = cnt + 1
+
+    def clear(self):
+        self._lcd.lcd_clear()

@@ -1,6 +1,9 @@
 import i2c_lib
 from time import *
 
+from myhvac_core import cfg
+CONF = cfg.CONF
+
 # LCD Address
 ADDRESS = 0x27
 
@@ -50,10 +53,12 @@ En = 0b00000100 # Enable bit
 Rw = 0b00000010 # Read/Write bit
 Rs = 0b00000001 # Register select bit
 
+
 class lcd:
+
    #initializes objects and lcd
    def __init__(self):
-      self.lcd_device = i2c_lib.i2c_device(ADDRESS)
+      self.lcd_device = i2c_lib.I2CDevice(CONF.lcd.address)
 
       self.lcd_write(0x03)
       self.lcd_write(0x03)

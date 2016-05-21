@@ -41,5 +41,6 @@ setup(name='myhvac_service',
       packages=['myhvac_service'],
       include_package_data=True,
       zip_safe=False,
-      install_requires=reqs
+      install_requires=reqs,
+      entry_points={'console_scripts': ['myhvac-service = myhvac_service.service:main']}
       )

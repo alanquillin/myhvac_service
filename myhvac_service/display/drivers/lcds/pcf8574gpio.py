@@ -1,9 +1,12 @@
 from smbus import SMBus
 # RPi.GPIO compatible interface for PCF8574
 # Only supports output
+
+
 class Pcf8574Gpio(object):
     BCM = 0
     OUT = 0
+
     def __init__(self, busnum, address):
         self.bus = SMBus(busnum)
         self.address = address
