@@ -2,10 +2,10 @@ from myhvac_core import cfg
 from myhvac_core import hvac
 from myhvac_core import hub
 from myhvac_core import system_state as states
+from myhvac_core import temp
 from myhvac_service.display import api as display
 from myhvac_service.programs import factory as prog_fac
 
-import random
 import logging
 from datetime import datetime
 from datetime import timedelta
@@ -54,26 +54,32 @@ class ProgramManager(object):
         while self.is_running:
             hub.sleep(1)
 
-        current_state = hvac.get_system_state()
+        current_state, _ = hvac.get_system_state()
         if current_state != states.OFF:
             hvac.set_system_state(states.OFF, current_state)
 
     def run(self):
-        LOG.debug('Running program interval...')
-        current_state = hvac.get_system_state()
-        LOG.debug('Current state: %s', states.print_state(current_state))
-        # This is temp until we pull from db
-        current_temp_c = random.randint(19, 24)
-        current_temp = current_temp_c * 1.8 + 32
-        LOG.debug('Current temp: %s', current_temp)
-        program = prog_fac.get_program()
+        try:
+            LOG.debug('Running program interval...')
+            current_state, _ = hvac.get_system_state()
+            LOG.debug('Current state: %s', states.print_state(current_state))
+            # This is temp until we pull from db
+            current_temp = temp.get_current_temp()
+            current_temp_c = (current_temp - 32) * 5.0 / 9.0
+            LOG.debug('Current temp: %s', current_temp)
+            program = prog_fac.get_program()
 
-        expected_state = program.get_state(current_temp)
-        LOG.debug('Expected state: %s', states.print_state(expected_state))
-        if current_state != expected_state:
-            LOG.info('Setting system state to: %s', states.print_state(expected_state))
-            hvac.set_system_state(expected_state, current_state)
+            LOG.debug('Running program %s, program type %s', program.name, program.get_program_type())
+            expected_state = program.get_state(current_temp)
+            LOG.debug('Expected state: %s', states.print_state(expected_state))
+            if current_state != expected_state:
+                LOG.info('Setting system state to: %s', states.print_state(expected_state))
+                hvac.set_system_state(expected_state, current_state)
+            else:
+                LOG.debug('Seems like the system is already in the expected state, so I ain\'t gonna do crap!')
 
-        display.update(mode=states.print_state(expected_state),
-                       temp_f=current_temp,
-                       temp_c=current_temp_c)
+            display.update(mode=states.print_state(expected_state),
+                           temp_f=current_temp,
+                           temp_c=current_temp_c)
+        except Exception:
+            LOG.exception('CRAP!!!! Stuff happened')
