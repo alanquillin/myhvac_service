@@ -1,4 +1,4 @@
-from myhvac_core import cfg
+from myhvac_service import cfg
 from myhvac_service.display.drivers.lcds.lcd2004_driver import Lcd2004Driver
 
 import logging

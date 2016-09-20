@@ -1,9 +1,9 @@
-from myhvac_core import cfg
-from myhvac_core.db import api as db
-from myhvac_core import hub
-from myhvac_core import hvac
-from myhvac_core import log
-from myhvac_service.display import api as display
+from myhvac_service import cfg
+from myhvac_service import db
+from myhvac_service import display
+from myhvac_service import hub
+from myhvac_service import hvac
+from myhvac_service import log
 from myhvac_service import prog_manager as pm
 from myhvac_service import wsgi
 
@@ -39,7 +39,8 @@ def shutdown(prog_man):
 def main():
     try:
         CONF(project='myhvac_service')
-    except cfg.RequiredOptError:
+    except cfg.RequiredOptError as e:
+        print e
         CONF.print_help()
         raise SystemExit(1)
 

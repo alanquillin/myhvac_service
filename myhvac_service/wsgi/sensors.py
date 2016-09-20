@@ -1,7 +1,7 @@
 from flask_restful import abort
 from flask_restful import reqparse
 
-from myhvac_core.db import api as db
+from myhvac_service import db
 from myhvac_service.wsgi.base import BaseResource
 
 import logging

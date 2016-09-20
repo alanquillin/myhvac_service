@@ -1,5 +1,4 @@
-from myhvac_core.db import api as db
-
+from myhvac_service import db
 from flask_restful import Resource
 
 import logging
