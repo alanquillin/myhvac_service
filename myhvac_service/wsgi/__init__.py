@@ -4,7 +4,7 @@ from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 
-from myhvac_core import cfg
+from myhvac_service import cfg
 from myhvac_service.wsgi import measurements
 from myhvac_service.wsgi import sensors
 from myhvac_service.wsgi import system

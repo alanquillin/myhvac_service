@@ -1,7 +1,7 @@
 from flask_restful import abort
 from flask_restful import reqparse
 
-from myhvac_core.db import api as db
+from myhvac_service import db
 from myhvac_service.wsgi.base import BaseResource
 
 import logging
@@ -41,26 +41,6 @@ class SensorTempuratures(MeasurementResource):
 
         return temp, 201
 
-    def get(self, sensor_id, **kwargs):
-        LOG.debug('Retrieving sensor %s temperatures...', sensor_id)
-
-        def do(session, sensor_id, *args, **kwargs):
-            sensor_id = self.get_sensor_id(session, sensor_id)
-
-            if not sensor_id:
-                abort(404)
-
-            temps = db.get_sensor_temperatures(session, sensor_id=sensor_id)
-            temps_d = []
-            for temp in temps:
-                temps_d.append(self.parse_temp(temp))
-
-            return temps_d
-
-        temps = self.sessionize(do, sensor_id, **kwargs)
-
-        return dict(measurements=temps)
-
 
 class SensorMeasurements(MeasurementResource):
     def post(self, sensor_id, **kwargs):
@@ -84,24 +64,3 @@ class SensorMeasurements(MeasurementResource):
         temp = self.sessionize(do, sensor_id, **kwargs)
 
         return temp, 201
-
-    def get(self, sensor_id, **kwargs):
-        LOG.debug('Retrieving sensor %s temperatures...', sensor_id)
-
-        def do(session, sensor_id, *args, **kwargs):
-            sensor_id = self.get_sensor_id(session, sensor_id)
-
-            if not sensor_id:
-                abort(404)
-
-            temps = db.get_sensor_measurements(session, sensor_id=sensor_id)
-
-            temps_d = []
-            for temp in temps:
-                temps_d.append(self.parse_temp(temp))
-
-            return temps_d
-
-        temps = self.sessionize(do, sensor_id, **kwargs)
-
-        return dict(measurements=temps)

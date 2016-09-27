@@ -1,7 +1,7 @@
 from Adafruit_CharLCD import Adafruit_CharLCD
 from Adafruit_MCP230xx import MCP230XX_GPIO
 
-from myhvac_core import cfg
+from myhvac_service import cfg
 
 CONF = cfg.CONF
 

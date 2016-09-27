@@ -1,7 +1,8 @@
 import i2c_lib
 from time import *
 
-from myhvac_core import cfg
+from myhvac_service import cfg
+
 CONF = cfg.CONF
 
 # LCD Address

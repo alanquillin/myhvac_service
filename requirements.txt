@@ -1,4 +1,11 @@
 flask
 flask-restful
-aniso8601
+#aniso8601
 tornado
+netaddr
+#RPI.GPIO
+oslo.config
+oslo.log
+MySQL-python
+sqlalchemy
+psycopg2
