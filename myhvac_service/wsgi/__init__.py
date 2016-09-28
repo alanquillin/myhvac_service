@@ -29,8 +29,8 @@ api = Api(app)
 
 api.add_resource(sensors.Sensors, '/sensors')
 api.add_resource(sensors.Sensor, '/sensors/<sensor_id>')
-api.add_resource(measurements.SensorMeasurements, '/sensors/<sensor_id>/measurements')
 api.add_resource(measurements.SensorTempuratures, '/sensors/<sensor_id>/measurements/temperatures')
+api.add_resource(measurements.SensorMeasurements, '/sensors/<sensor_id>/measurements')
 api.add_resource(system.SystemState, '/system/state')
 api.add_resource(system.SystemPing, '/system/ping')
 

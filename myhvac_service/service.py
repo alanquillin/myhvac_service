@@ -40,7 +40,10 @@ def main():
     try:
         CONF(project='myhvac_service')
     except cfg.RequiredOptError as e:
+        print '\n\n********************* WOW SOMETHING WENT WRONG!!!! **************************\n'
         print e
+        print '\n*****************************************************************************\n\n'
+        print 'Configuration Help and Usage:'
         CONF.print_help()
         raise SystemExit(1)
 

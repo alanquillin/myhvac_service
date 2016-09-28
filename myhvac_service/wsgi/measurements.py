@@ -11,12 +11,15 @@ LOG = logging.getLogger(__name__)
 
 class MeasurementResource(BaseResource):
     @staticmethod
-    def parse_temp(temp):
-        if not temp:
-            return None
-        return dict(id=temp.id,
-                    measurement=temp.measurement,
-                    recorded_date=temp.recorded_date.isoformat())
+    def parse_measurement(measurement):
+        if not measurement:
+             return None
+
+        data = dict(id=measurement.id,
+                    data=measurement.data,
+                    recorded_date=measurement.recorded_date.isoformat())
+
+        return {measurement.measurement_type.name: data}
 
 
 class SensorTempuratures(MeasurementResource):
@@ -34,8 +37,8 @@ class SensorTempuratures(MeasurementResource):
                 LOG.debug('Cold not find sensor with id: %s', sensor_id)
                 abort(404)
 
-            temp  = db.insert_sensor_temperature(session, sensor.id, temp.get('f'))
-            return self.parse_temp(temp)
+            t = db.insert_sensor_temperature(session, sensor.id, temp.get('f'))
+            return self.parse_measurement(t)
 
         temp = self.sessionize(do, sensor_id, **kwargs)
 
@@ -57,9 +60,9 @@ class SensorMeasurements(MeasurementResource):
                 abort(404)
 
             type = measurement.get('type')
-            temp = db.insert_sensor_measurement(session, sensor.id, type, measurement.get('data'))
+            m = db.insert_sensor_measurement(session, sensor.id, type, measurement.get('data'))
 
-            return self.parse_temp(temp)
+            return self.parse_measurement(m)
 
         temp = self.sessionize(do, sensor_id, **kwargs)
 

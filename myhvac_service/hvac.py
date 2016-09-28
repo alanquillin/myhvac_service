@@ -22,7 +22,8 @@ io_opts = [
 ]
 
 hvac_opts = [
-    cfg.IntOpt('on_mode_change_fan_interval', required=120, help='The time (in seconds) to run FAN_ONLY mode before changing the system mode.')
+    cfg.IntOpt('on_mode_change_fan_interval', default=120,
+               help='The time (in seconds) to run FAN_ONLY mode before changing the system mode.')
 ]
 
 CONF = cfg.CONF
