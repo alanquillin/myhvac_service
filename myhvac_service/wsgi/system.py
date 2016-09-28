@@ -15,7 +15,8 @@ class SystemState(BaseResource):
         curr_temp = temp.get_current_temp()
         mode = sys_mode_factory.get_system_mode()
 
-        data = dict(state=states.print_state(rs),
+        data = dict(system_state=states.print_state(rs),
+                    expected_program_state=states.print_state(mode.get_state(curr_temp)),
                     current_temp=curr_temp,
                     system_mode=mode.to_dict())
 

@@ -4,8 +4,13 @@ from datetime import datetime, timedelta
 
 
 def get_active_schedule(program, now=None):
+    active, _ = get_active_and_next_schedule(program, now)
+    return active
+
+
+def get_active_and_next_schedule(program, now=None):
     if not program or not program.schedules:
-        return None
+        return None, None
 
     if not now:
         now = datetime.now()
@@ -13,17 +18,19 @@ def get_active_schedule(program, now=None):
     ordered_schedules = extract_ordered_schedules(program, now)
 
     if not ordered_schedules:
-        return None
+        return None, None
 
     active_schedule = ordered_schedules[-1]['schedule']
+    next_schedule = ordered_schedules[0]['schedule']
 
     for s in ordered_schedules:
         if now < s.get('datetime'):
+            next_schedule = s.get('schedule')
             break
 
         active_schedule = s.get('schedule')
 
-    return active_schedule
+    return active_schedule, next_schedule
 
 
 def extract_ordered_schedules(program, now=None):

@@ -50,19 +50,26 @@ class AutoMode(SystemModeBase):
 
             if program:
                 program_data = dict(name=program.name)
-                schedule = utils.get_active_schedule(program)
-                schedule_data = None
-                if schedule:
-                    schedule_data = dict(days_of_week=schedule.days_of_week(),
-                                         time_of_day=str(schedule.time_of_day),
-                                         cool_temp=schedule.cool_temp,
-                                         heat_temp=schedule.heat_temp)
+                schedule, next_schedule = utils.get_active_and_next_schedule(program)
+
+                schedule_data = self._build_schedule_dict(schedule)
+                next_schedule_data = self._build_schedule_dict(next_schedule)
 
                 program_data['active_schedule'] = schedule_data
+                program_data['next_schedule'] = next_schedule_data
 
             return dict(name=self.name(), program=program_data)
 
         return db.sessionize(do)
+
+    def _build_schedule_dict(self, schedule):
+        if not schedule:
+            return None
+
+        return dict(days_of_week=schedule.days_of_week(),
+                    time_of_day=str(schedule.time_of_day),
+                    cool_temp=schedule.cool_temp,
+                    heat_temp=schedule.heat_temp)
 
     def _set_program_name(self, program):
         self._program_name = 'Unknown'
