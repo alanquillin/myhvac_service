@@ -3,8 +3,8 @@ import logging
 
 from myhvac_service import utils
 
-from sqlalchemy import Column, ForeignKey, Integer, String, BigInteger, DateTime, Boolean, Table, Float, Time
-from sqlalchemy.dialects.mysql import BIT
+from sqlalchemy import Column, ForeignKey, Integer, String, BigInteger, DateTime, Boolean, Float, Time
+#from sqlalchemy.dialects.postgresql import BOOLEAN
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -151,16 +151,13 @@ class SystemSettings(Base):
     current_program = relationship(Program)
     system_mode_id = Column(Integer, ForeignKey('system_modes.id'), nullable=False)
     system_mode = relationship(SystemMode)
-    manual_cool_temp = Column(Float)
-    manual_heat_temp = Column(Float)
-    temporary_cool_temp = Column(Float)
-    temporary_heat_temp = Column(Float)
-    active = Column(BIT, nullable=False)
+    cool_temp = Column(Float)
+    heat_temp = Column(Float)
+    active = Column(Boolean, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now)
     updated_at = Column(DateTime, nullable=False, default=datetime.now)
 
     def __str__(self):
-        return '%s <id:%s, current_program_id=%s, system_mode_id=%s, manual_cool_temp=%s, ' \
-               'manual_heat_temp=%s, temporary_cool_temp=%s, temporary_heat_temp=%s>' % \
+        return '%s <id:%s, current_program_id=%s, system_mode_id=%s, cool_temp=%s, heat_temp=%s>' % \
                (self.__class__.__name__, self.id, self.current_program_id, self.system_mode_id,
-                self.manual_cool_temp, self.manual_heat_temp, self.temporary_cool_temp, self.temporary_heat_temp)
+                self.cool_temp, self.heat_temp)

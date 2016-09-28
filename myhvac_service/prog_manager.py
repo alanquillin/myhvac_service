@@ -2,7 +2,7 @@ from myhvac_service import cfg
 from myhvac_service import hub
 from myhvac_service import display
 from myhvac_service import hvac
-from myhvac_service.programs import factory as prog_fac
+from myhvac_service.system_modes import factory as sys_mode_fac
 from myhvac_service import system_state as states
 from myhvac_service import temp
 
@@ -62,7 +62,7 @@ class ProgramManager(object):
         try:
             LOG.debug('Running program interval...')
             current_state, _ = hvac.get_system_state()
-            LOG.debug('Current state: %s', states.print_state(current_state))
+            LOG.info('Current state: %s', states.print_state(current_state))
 
             current_temp = temp.get_current_temp()
             if not current_temp:
@@ -71,12 +71,12 @@ class ProgramManager(object):
                 return
 
             current_temp_c = (current_temp - 32) * 5.0 / 9.0
-            LOG.debug('Current temp: %s', current_temp)
+            LOG.info('Current temp: %s', current_temp)
 
-            program = prog_fac.get_program()
-            LOG.debug('Running program %s, program type %s', program.name, program.get_program_type())
+            mode = sys_mode_fac.get_system_mode()
+            LOG.info('System mode: %s.  Running program: %s', mode.name(), mode.program_name())
 
-            expected_state = program.get_state(current_temp)
+            expected_state = mode.get_state(current_temp)
             LOG.debug('Expected state: %s', states.print_state(expected_state))
 
             if current_state != expected_state:
@@ -86,6 +86,7 @@ class ProgramManager(object):
                 LOG.debug('Seems like the system is already in the expected state, so I ain\'t gonna do crap!')
 
             display.update(mode=states.print_state(expected_state),
+                           program=mode.program_name(),
                            temp_f=current_temp,
                            temp_c=current_temp_c)
         except Exception:

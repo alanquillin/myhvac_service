@@ -6,7 +6,7 @@ import sys
 LOG = logging.getLogger(__name__)
 
 
-class ProgramBase(object):
+class SystemModeBase(object):
     def __init__(self, id_):
         self._id = id_
         pass
@@ -31,9 +31,3 @@ class ProgramBase(object):
             return states.HEAT
 
         return states.OFF
-
-    @staticmethod
-    def _parse_program_settings(setting):
-        return dict(id=setting.id,
-                    cool_threshold=setting.cool_temp,
-                    heat_threshold=setting.heat_temp)

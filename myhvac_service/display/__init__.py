@@ -7,7 +7,7 @@ import logging
 LOG = logging.getLogger(__name__)
 
 opts = [
-    cfg.StrOpt('default_format', default="Mode: %(mode)s\nCurrent Temp: %(temp_f).1fF\n              %(temp_c).1fC",
+    cfg.StrOpt('default_format', default="Mode: %(mode)s\nProgram: %(program)s\nCurrent Temp: %(temp_f).1fF\n              %(temp_c).1fC",
                 help='The display type.'),
     cfg.StrOpt('type', default="lcd",
                help='The display type.')

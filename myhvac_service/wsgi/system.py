@@ -1,7 +1,7 @@
 from myhvac_service import hvac
 from myhvac_service import system_state as states
 from myhvac_service import temp
-from myhvac_service.programs import factory as prog_factory
+from myhvac_service.system_modes import factory as prog_factory
 from myhvac_service.wsgi.base import BaseResource
 
 import logging

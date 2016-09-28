@@ -46,8 +46,8 @@ class BaseResource(Resource):
             if not sensor:
                 LOG.debug('Could not retrieve sensor_id \'%s\' via the id field, '
                           'trying the manufacturer id', sensor_id)
-                sensor = db.get_sensor(session, manufacturer_id=sensor_id)
+                sensor = db.get_sensor(session, manufacturer_id=str(sensor_id))
 
             return sensor
         except ValueError:
-            return db.get_sensor(session, manufacturer_id=sensor_id)
+            return db.get_sensor(session, manufacturer_id=str(sensor_id))
