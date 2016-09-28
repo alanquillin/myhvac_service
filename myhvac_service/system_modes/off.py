@@ -19,3 +19,6 @@ class OffMode(SystemModeBase):
 
     def program_name(self):
         return self.name()
+
+    def to_dict(self):
+        return dict(name=self.name())

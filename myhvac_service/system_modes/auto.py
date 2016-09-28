@@ -42,6 +42,28 @@ class AutoMode(SystemModeBase):
     def program_name(self):
         return "%s (%s)" % (self._program_name, self.name())
 
+    def to_dict(self):
+        def do(session):
+            system_settings = system.get_current_system_settings(session)
+            program = system_settings.current_program
+            program_data = None
+
+            if program:
+                program_data = dict(name=program.name)
+                schedule = utils.get_active_schedule(program)
+                schedule_data = None
+                if schedule:
+                    schedule_data = dict(days_of_week=schedule.days_of_week(),
+                                         time_of_day=str(schedule.time_of_day),
+                                         cool_temp=schedule.cool_temp,
+                                         heat_temp=schedule.heat_temp)
+
+                program_data['active_schedule'] = schedule_data
+
+            return dict(name=self.name(), program=program_data)
+
+        return db.sessionize(do)
+
     def _set_program_name(self, program):
         self._program_name = 'Unknown'
 

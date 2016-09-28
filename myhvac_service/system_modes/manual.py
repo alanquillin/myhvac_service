@@ -24,3 +24,11 @@ class ManualMode(SystemModeBase):
 
     def program_name(self):
         return self.name()
+
+    def to_dict(self):
+        def do(session):
+            system_settings = system.get_current_system_settings(session)
+            return dict(name=self.name(), cool_temp=system_settings.cool_temp,
+                        heat_temp=system_settings.heat_temp)
+
+        return db.sessionize(do)
