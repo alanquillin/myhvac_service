@@ -31,8 +31,8 @@ class SensorType(Base):
     id = Column(Integer, primary_key=True)
     model = Column(String(50), nullable=False)
     manufacturer = Column(String(50), nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, default=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return '%s <id:%s, model:%s, manufacturer:%s>' % (self.__class__.__name__,
@@ -47,8 +47,8 @@ class Sensor(Base):
     sensor_type_id = Column(Integer, ForeignKey('sensor_types.id'), nullable=True)
     sensor_type = relationship(SensorType)
     room_id = Column(Integer, ForeignKey('rooms.id'), nullable=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, default=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return '%s <id:%s, name:%s, manufacturer_id:%s, room_id:%s, sensor_type_id:%s>' % \
@@ -60,8 +60,8 @@ class MeasurementType(Base):
     __tablename__ = 'measurement_types'
     id = Column(BigInteger, primary_key=True)
     name = Column(String(15), nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, default=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return '%s <id:%s, name:%s>' % (self.__class__.__name__, self.id, self.name)
@@ -75,8 +75,8 @@ class Measurement(Base):
     data = Column(Float, nullable=False)
     recorded_date = Column(DateTime, nullable=False)
     measurement_type = relationship(MeasurementType)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, default=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return '%s <id:%s, sensor_id:%s, manufacturer_type_id:%s, data:%s, recorded_date:%s>' % \
@@ -91,8 +91,8 @@ class Room(Base):
     active = Column(Boolean, nullable=False)
     weight = Column(Float, nullable=False)
     sensors = relationship(Sensor)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, default=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return '%s <id:%s, name:%s, active:%s, weight:%s>' % (self.__class__.__name__, self.id,
@@ -107,8 +107,8 @@ class ProgramSchedule(Base):
     time_of_day = Column(Time, nullable=False)
     cool_temp = Column(Integer, nullable=False)
     heat_temp = Column(Integer, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, default=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return '%s <id:%s, program_id:%s, time_of_day:%s, cool_temp:%s, ' \
@@ -125,8 +125,8 @@ class Program(Base, ParseableModel):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
     schedules = relationship(ProgramSchedule)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, default=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return '%s <id:%s, name:%s>' % (self.__class__.__name__, self.id, self.name)
@@ -137,8 +137,8 @@ class SystemMode(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
     has_programs = Column(Boolean, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, default=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return '%s <id:%s, name:%s>' % (self.__class__.__name__, self.id, self.name)
@@ -154,8 +154,8 @@ class SystemSettings(Base):
     cool_temp = Column(Float)
     heat_temp = Column(Float)
     active = Column(Boolean, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, default=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __str__(self):
         return '%s <id:%s, current_program_id=%s, system_mode_id=%s, cool_temp=%s, heat_temp=%s>' % \

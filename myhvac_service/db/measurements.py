@@ -53,7 +53,8 @@ def get_most_recent_sensor_temperature(session, order_by=None, order_desc=None, 
 def insert_sensor_temperature(session, sensor_id, temp, **kwargs):
     measurement_type = get_measurement_type(session, name='Temperature')
     measurement = models.Measurement(sensor_id=sensor_id, measurement_type_id=measurement_type.id,
-                                     measurement_type=measurement_type, data=temp, recorded_date=datetime.now())
+                                     measurement_type=measurement_type, data=temp,
+                                     recorded_date=datetime.now().utcnow())
 
     session.add(measurement)
     return measurement

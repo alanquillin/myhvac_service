@@ -42,7 +42,7 @@ def get_current_temp():
                                                                         order_desc=True,
                                                                         order_by=models.Measurement.recorded_date)
                     delta_min = CONF.temp.max_measurement_age_threshold_min
-                    if measurement and measurement.recorded_date > datetime.now() - timedelta(minutes=delta_min):
+                    if measurement and measurement.recorded_date > datetime.utcnow() - timedelta(minutes=delta_min):
                         measurement_agg = measurement.data
                         measurement_cnt = measurement_cnt + 1
 

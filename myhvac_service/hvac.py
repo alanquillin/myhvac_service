@@ -1,9 +1,7 @@
 import cfg
 import logging
-
 import threading
 
-from myhvac_service import gpio as GPIO
 from myhvac_service import system_state as state
 
 LOG = logging.getLogger(__name__)
@@ -26,9 +24,21 @@ hvac_opts = [
                help='The time (in seconds) to run FAN_ONLY mode before changing the system mode.')
 ]
 
+gpio_opts = [
+    cfg.BoolOpt('fake', default=False, help='')
+]
+
 CONF = cfg.CONF
 CONF.register_opts(io_opts, 'io')
 CONF.register_opts(hvac_opts, 'hvac')
+CONF.register_opts(gpio_opts, 'gpio')
+
+
+if CONF.gpio.fake:
+    LOG.info('Using fake GPIO')
+    from myhvac_service import fake_gpio as GPIO
+else:
+    from RPi import GPIO as GPIO
 
 
 def init_gpio():
@@ -99,24 +109,30 @@ def set_system_state(to_state, current_state):
                       state.print_state(s), state.print_state(cs))
 
     def _heat_on():
-        GPIO.output(CONF.io.green_pin_out, True)
-        GPIO.output(CONF.io.white_pin_out, True)
-        GPIO.output(CONF.io.yellow_pin_out, False)
+        LOG.debug('Setting system mode to HEAT')
+        _set_outputs(green=True, white=True)
 
     def _cool_on():
-        GPIO.output(CONF.io.green_pin_out, True)
-        GPIO.output(CONF.io.white_pin_out, True)
-        GPIO.output(CONF.io.yellow_pin_out, True)
+        LOG.debug('Setting system mode to COOL')
+        _set_outputs(green=True, white=True, yellow=True)
 
     def _fan_only():
-        GPIO.output(CONF.io.green_pin_out, True)
-        GPIO.output(CONF.io.white_pin_out, False)
-        GPIO.output(CONF.io.yellow_pin_out, False)
+        LOG.debug('Setting system mode to FAN ONLY')
+        _set_outputs(green=True)
 
     def _off():
-        GPIO.output(CONF.io.green_pin_out, False)
-        GPIO.output(CONF.io.white_pin_out, False)
-        GPIO.output(CONF.io.yellow_pin_out, False)
+        LOG.debug('Setting system mode to OFF')
+        _set_outputs()
+
+    def _set_outputs(green=False, white=False, yellow=False):
+        LOG.debug('Setting GREEN out pin to %s', 'ON' if green else 'OFF')
+        GPIO.output(CONF.io.green_pin_out, green)
+
+        LOG.debug('Setting WHITE out pin to %s', 'ON' if white else 'OFF')
+        GPIO.output(CONF.io.white_pin_out, white)
+
+        LOG.debug('Setting YELLOW out pin to %s', 'ON' if yellow else 'OFF')
+        GPIO.output(CONF.io.yellow_pin_out, yellow)
 
     if current_state in [state.OFF, state.FAN_ONLY]:
         _set_system_state(to_state)
